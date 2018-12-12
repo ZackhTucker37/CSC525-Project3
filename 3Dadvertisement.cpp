@@ -8,7 +8,7 @@
 								- basic setup of windows
 								- render the background
 								- render the frame 
-								- add camera movement via W-S-A-D keys
+								- add camera movement via LEFT-RIGHT-DOWN-UP keys
 							Josiah McGurty -- 50%
 								- basic setup of windows
 								- render 3D objects
@@ -32,7 +32,6 @@
 using namespace std;
 //***********************************************************************************
 
-
 int selection;
 
 GLfloat letterVertices[][3] = {
@@ -53,12 +52,9 @@ GLfloat letterVertices[][3] = {
 {-90, 25, -10}, {-100, 20, 0}, {-90, 15, 10}, {-80, 20, 0},
 };
 
-GLfloat pipeVertices[][3] = { {60, 55, 40}, {60, -50, 40}, {65, 90, -70},
-{65, 0, -70}, {-70, 70, 20}, {-70, -20, 20} };
-
-
 GLfloat pipeColors[][3] = { {0.8, 0.2, 0.1}, {0.1, 0.8, 0.2}, {0.1, 0.2, 0.8} };
 
+//***********************************************************************************
 void drawLetters(int a, int b, int c, int d)
 {
 	glBegin(GL_POLYGON);
@@ -69,16 +65,7 @@ void drawLetters(int a, int b, int c, int d)
 	glEnd();
 }
 
-void drawPolygon(int a, int b, int c, int d)
-{
-	glBegin(GL_POLYGON);
-	glVertex3fv(pipeVertices[a]);
-	glVertex3fv(pipeVertices[b]);
-	glVertex3fv(pipeVertices[c]);
-	glVertex3fv(pipeVertices[d]);
-	glEnd();
-}
-
+//***********************************************************************************
 void drawLightsOut()
 {
 	glPolygonMode(GL_BACK, GL_LINE);
@@ -134,41 +121,11 @@ void drawLightsOut()
 	drawLetters(35, 34, 33, 32);
 	drawLetters(51, 50, 49, 48);
 
-
-
 	glColor3fv(pipeColors[1]);
 	//drawPolygon(5, 4, 2, 3);
 
 	glColor3fv(pipeColors[2]);
 	//drawPolygon(5, 1, 0, 4);
-}
-
-void drawPipeSection()
-{
-	glPolygonMode(GL_BACK, GL_LINE);
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glColor3fv(pipeColors[0]);
-	drawPolygon(0, 1, 3, 2);
-	glColor3fv(pipeColors[1]);
-	drawPolygon(5, 4, 2, 3);
-	glColor3fv(pipeColors[2]);
-	drawPolygon(5, 1, 0, 4);
-}
-
-void drawAxes()
-{
-	glColor3f(1, 1, 1); // change drawing color to white
-	glBegin(GL_POINTS);	// use points to form X-/Y-/Z-axes180
-	for (int x = -150; x <= 150; x++) glVertex3i(x, 0, 0); // draw X-axis
-	for (int y = -150; y <= 150; y++) glVertex3i(0, y, 0); // draw Y-axis
-	for (int z = -150; z <= 150; z++) glVertex3i(0, 0, z); // draw Z-axis
-	glEnd();
-	glRasterPos3i(140, -20, 10); // Axes labels
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, 'X');
-	glRasterPos3i(-20, 140, 10);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, 'Y');
-	glRasterPos3i(-10, -10, 140);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, 'Z');
 }
 
 //***********************************************************************************
@@ -208,6 +165,7 @@ void update() {
 	glFlush();
 }
 
+//***********************************************************************************
 void FirstMenu(int x)
 {
 	if (x == 7) {
@@ -219,6 +177,7 @@ void FirstMenu(int x)
 	}
 }
 
+//***********************************************************************************
 void runXMenu(int x) {
 	if (x == 1) {
 		selection = 1;
@@ -229,6 +188,7 @@ void runXMenu(int x) {
 	update();
 }
 
+//***********************************************************************************
 void runYMenu(int x) {
 	if (x == 1) {
 		selection = 3;
@@ -239,6 +199,7 @@ void runYMenu(int x) {
 	update();
 }
 
+//***********************************************************************************
 void runZMenu(int x) {
 	if (x == 1) {
 		selection = 5;
@@ -249,6 +210,7 @@ void runZMenu(int x) {
 	update();
 }
 
+//***********************************************************************************
 void mykeyboardFunc(int key, int x, int y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	switch (key) {
@@ -258,12 +220,11 @@ void mykeyboardFunc(int key, int x, int y) {
 	case GLUT_KEY_DOWN: glRotatef(-5.0, 0.0, 1.0, 0.0); break;
 	case GLUT_KEY_PAGE_UP: glRotatef(5.0, 0.0, 0.0, 1.0); break;
 	case GLUT_KEY_PAGE_DOWN: glRotatef(-5.0, 0.0, 0.0, 1.0); break;
-	case GLUT_KEY_END: myInit(); myDisplayCallback(); break; 
+	case GLUT_KEY_END: myInit(); myDisplayCallback(); break;
 	}
 	drawLightsOut();
 	glFlush();
 }
-
 
 //***********************************************************************************
 int main(int argc, char ** argv)
