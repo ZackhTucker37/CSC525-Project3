@@ -38,6 +38,9 @@ GLfloat colors[][3] = { {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0} };
 
 int selection;
 
+int xangle = 0;
+int yangle = 0;
+
 void drawAxis()
 {
 	char y;
@@ -136,6 +139,7 @@ void update() {
 void FirstMenu(int x)
 {
 	if (x == 7) {
+		myInit();
 		myDisplayCallback();
 	}
 	if (x == 8) {
@@ -173,6 +177,20 @@ void runZMenu(int x) {
 	update();
 }
 
+void mykeyboardFunc(int key, int x, int y) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	switch (key) {
+	case GLUT_KEY_LEFT: cout << "LEFT\n";  xangle += 1; cout << xangle; glRotatef(xangle, 1.0, 0.0, 0.0); xangle = 0; break;
+	case GLUT_KEY_RIGHT: cout << "RIGHT\n"; xangle -= 1; cout << xangle; glRotatef(xangle, 1.0, 0.0, 0.0); xangle = 0; break;
+	case GLUT_KEY_UP: cout << "UP\n"; yangle += 1; cout << yangle; glRotatef(yangle, 0.0, 1.0, 0.0); yangle = 0; break;
+	case GLUT_KEY_DOWN: cout << "Down\n"; yangle -= 1; cout << yangle; glRotatef(yangle, 0.0, 1.0, 0.0); yangle = 0; break;
+	case GLUT_KEY_END: myInit(); myDisplayCallback(); break; 
+	}
+	drawPipe();
+	drawAxis();
+	glFlush();
+}
+
 
 //***********************************************************************************
 int main(int argc, char ** argv)
@@ -180,10 +198,12 @@ int main(int argc, char ** argv)
 
 	glutInitWindowSize(400, 400);				// specify a window size
 	glutInitWindowPosition(100, 0);			// specify a window position
-	glutCreateWindow("3D Transformation");	// create a titled window
+	glutCreateWindow("3D Advertisement");	// create a titled window
 	myInit();									// setting up
 
 	glutDisplayFunc(myDisplayCallback);		// register a callback
+
+	glutSpecialFunc(mykeyboardFunc);
 
 	int XMenu = glutCreateMenu(runXMenu);
 	glutAddMenuEntry("+45", 1);
