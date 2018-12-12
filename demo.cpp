@@ -44,30 +44,13 @@ void changeSize(int w, int h) {
 
 void drawSnowMan() {
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	//glColor3f(1.0f, 1.0f, 1.0f);
 
 	// Draw Body
 
 	glTranslatef(0.0f, 0.75f, 0.0f);
 	glutSolidSphere(0.75f, 20, 20);
 
-	// Draw Head
-	glTranslatef(0.0f, 1.0f, 0.0f);
-	glutSolidSphere(0.25f, 20, 20);
-
-	// Draw Eyes
-	glPushMatrix();
-	glColor3f(0.0f, 0.0f, 0.0f);
-	glTranslatef(0.05f, 0.10f, 0.18f);
-	glutSolidSphere(0.05f, 10, 10);
-	glTranslatef(-0.1f, 0.0f, 0.0f);
-	glutSolidSphere(0.05f, 10, 10);
-	glPopMatrix();
-
-	// Draw Nose
-	glColor3f(1.0f, 0.5f, 0.5f);
-	glRotatef(0.0f, 1.0f, 0.0f, 0.0f);
-	glutSolidCone(0.08f, 0.5f, 10, 2);
 }
 
 void computePos(float deltaMove) {
@@ -114,6 +97,12 @@ void renderScene(void) {
 
 	for (int i = -3; i < 3; i++)
 		for (int j = -3; j < 3; j++) {
+			if (i % 2 == 0 || j % 2 == 0) {
+				glColor3f(1.0f, 0.0f, 0.0f);
+			}
+			if (i % 2 != 0 || j % 2 != 0) {
+				glColor3f(0.0f, 0.0f, 1.0f);
+			}
 			glPushMatrix();
 			glTranslatef(i*10.0, 0, j * 10.0);
 			drawSnowMan();
