@@ -32,75 +32,149 @@
 using namespace std;
 //***********************************************************************************
 
-GLfloat vertices[][3] = { {60, 55, 40}, {60, -50, 40}, {65, 90, -70}, {65, 0, -70}, {-70, 70, 20}, {-70, -20, 20} };
-
-GLfloat colors[][3] = { {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0} };
 
 int selection;
 
-int xangle = 0;
-int yangle = 0;
+GLfloat letterVertices[][3] = {
+{-150, 150, -10}, {-160, 145, 0}, {-150, 140, 10}, {-140, 145, 0}, //begin L
+{-150, 0, -10}, {-160, -5, 0}, {-150, -10, 10}, {-140, -5, 0},
+{150, 0, -10}, {160, -5, 0}, {150, -10, 10}, {140, -5, 0},
 
-void drawAxis()
+{-120, 25, -10}, {-130, 20, 0}, {-120, 15, 10}, {-110, 20, 0}, //begin i
+{-120, 75, -10}, {-130, 70, 0}, {-120, 65, 10}, {-110, 70, 0},
+{-120, 90, -10}, {-130, 85, 0}, {-120, 80, 10}, {-110, 85, 0},
+{-120, 100, -10}, {-130, 95, 0}, {-120, 90, 10}, {-110, 95, 0},
+
+{-90, 100, -10}, {-100, 95, 0}, {-90, 90, 10}, {-80, 95, 0}, //begin g
+{-90, 60, -10}, {-100, 55, 0}, {-90, 50, 10}, {-80, 55, 0},
+{-50, 60, -10}, {-60, 55, 0}, {-50, 50, 10}, {-40, 55, 0},
+{-50, 100, -10}, {-60, 95, 0}, {-50, 90, 10}, {-40, 95, 0},
+{-50, 25, -10}, {-60, 20, 0}, {-50, 15, 10}, {-40, 20, 0},
+{-90, 25, -10}, {-100, 20, 0}, {-90, 15, 10}, {-80, 20, 0},
+};
+
+GLfloat pipeVertices[][3] = { {60, 55, 40}, {60, -50, 40}, {65, 90, -70},
+{65, 0, -70}, {-70, 70, 20}, {-70, -20, 20} };
+
+
+GLfloat pipeColors[][3] = { {0.8, 0.2, 0.1}, {0.1, 0.8, 0.2}, {0.1, 0.2, 0.8} };
+
+void drawLetters(int a, int b, int c, int d)
 {
-	char y;
-	y = 'Y';
-	glRasterPos3f(-3, 155, 0);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, int(y));
-
-	char x;
-	x = 'X';
-	glRasterPos3f(155, -3, 0);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, int(x));
-
-	char z;
-	z = 'Z';
-	glRasterPos3f(0, 0, 0);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, int(z));
-
-	glPointSize(1);		// change point size back to 1
-
-	glBegin(GL_POINTS);	// use points to form X-/Y-axes
-	glColor3f(0, 0, 0);			 // change drawing color to black
-	for (int x = -150; x <= 150; x++) // draw X-axis
-		glVertex3i(x, 0, 0);
-	for (int y = -150; y <= 150; y++) // draw Y-axis
-		glVertex3i(0, y, 0);
-	for (int z = -150; z <= 150; z++) {
-		glVertex3i(0, 0, z);
-	}
+	glBegin(GL_POLYGON);
+	glVertex3fv(letterVertices[a]);
+	glVertex3fv(letterVertices[b]);
+	glVertex3fv(letterVertices[c]);
+	glVertex3fv(letterVertices[d]);
 	glEnd();
-
 }
 
-void drawPolygon(int a, int b, int c, int d) {
+void drawPolygon(int a, int b, int c, int d)
+{
+	glBegin(GL_POLYGON);
+	glVertex3fv(pipeVertices[a]);
+	glVertex3fv(pipeVertices[b]);
+	glVertex3fv(pipeVertices[c]);
+	glVertex3fv(pipeVertices[d]);
+	glEnd();
+}
 
+void drawLightsOut()
+{
 	glPolygonMode(GL_BACK, GL_LINE);
 	glPolygonMode(GL_FRONT, GL_FILL);
-	glBegin(GL_POLYGON);
-	glVertex3fv(vertices[a]);
-	glVertex3fv(vertices[b]);
-	glVertex3fv(vertices[c]);
-	glVertex3fv(vertices[d]);
-	glEnd();
+
+	glColor3fv(pipeColors[0]);
+	drawLetters(0, 1, 2, 3); // Draw the 'L'
+	drawLetters(3, 2, 6, 7);
+	drawLetters(2, 1, 5, 6);
+	drawLetters(1, 0, 4, 5);
+	drawLetters(0, 3, 7, 4);
+	drawLetters(4, 7, 6, 5);
+	drawLetters(8, 4, 5, 9);
+	drawLetters(9, 5, 6, 10);
+	drawLetters(10, 6, 7, 11);
+	drawLetters(11, 7, 4, 8);
+	drawLetters(8, 9, 10, 11);
+
+	drawLetters(15, 14, 13, 12); // draw the 'i'
+	drawLetters(16, 17, 18, 19);
+	drawLetters(18, 17, 13, 14);
+	drawLetters(19, 18, 14, 15);
+	drawLetters(16, 19, 15, 12);
+	drawLetters(17, 16, 12, 13);
+	drawLetters(20, 23, 22, 21); // dot the 'i'
+	drawLetters(24, 25, 26, 27);
+	drawLetters(27, 26, 22, 23);
+	drawLetters(26, 25, 21, 22);
+	drawLetters(25, 24, 20, 21);
+	drawLetters(24, 27, 23, 20);
+
+	drawLetters(28, 29, 41, 40); // draw the 'g'
+	drawLetters(29, 30, 42, 41);
+	drawLetters(30, 31, 43, 42);
+	drawLetters(31, 28, 40, 43);
+	drawLetters(30, 29, 33, 34);
+	drawLetters(31, 30, 34, 35);
+	drawLetters(28, 31, 35, 32);
+	drawLetters(29, 28, 32, 33);
+	drawLetters(32, 33, 37, 36);
+	drawLetters(33, 34, 38, 37);
+	drawLetters(34, 35, 39, 38);
+	drawLetters(35, 32, 36, 39);
+	drawLetters(42, 41, 45, 46);
+	drawLetters(43, 42, 46, 47);
+	drawLetters(40, 43, 47, 44);
+	drawLetters(41, 40, 44, 45);
+	drawLetters(45, 44, 48, 49);
+	drawLetters(46, 45, 49, 50);
+	drawLetters(44, 47, 51, 48);
+	drawLetters(47, 46, 50, 51);
+	drawLetters(40, 41, 42, 43);
+	drawLetters(35, 34, 33, 32);
+	drawLetters(51, 50, 49, 48);
+
+
+
+	glColor3fv(pipeColors[1]);
+	//drawPolygon(5, 4, 2, 3);
+
+	glColor3fv(pipeColors[2]);
+	//drawPolygon(5, 1, 0, 4);
 }
 
-void drawPipe() {
-	glColor3fv(colors[1]);
+void drawPipeSection()
+{
+	glPolygonMode(GL_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT, GL_FILL);
+	glColor3fv(pipeColors[0]);
 	drawPolygon(0, 1, 3, 2);
-
-	glColor3fv(colors[2]);
+	glColor3fv(pipeColors[1]);
 	drawPolygon(5, 4, 2, 3);
-
-	glColor3fv(colors[3]);
+	glColor3fv(pipeColors[2]);
 	drawPolygon(5, 1, 0, 4);
 }
 
+void drawAxes()
+{
+	glColor3f(1, 1, 1); // change drawing color to white
+	glBegin(GL_POINTS);	// use points to form X-/Y-/Z-axes180
+	for (int x = -150; x <= 150; x++) glVertex3i(x, 0, 0); // draw X-axis
+	for (int y = -150; y <= 150; y++) glVertex3i(0, y, 0); // draw Y-axis
+	for (int z = -150; z <= 150; z++) glVertex3i(0, 0, z); // draw Z-axis
+	glEnd();
+	glRasterPos3i(140, -20, 10); // Axes labels
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, 'X');
+	glRasterPos3i(-20, 140, 10);
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, 'Y');
+	glRasterPos3i(-10, -10, 140);
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, 'Z');
+}
 
 //***********************************************************************************
 void myInit()
 {
-	glClearColor(0.8, 0.8, 0.8, 0);			// specify a background color: white 
+	glClearColor(0.15, 0.15, 0.15, 0);			// specify a background color: white 
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glEnable(GL_DEPTH_TEST);
@@ -115,8 +189,7 @@ void myDisplayCallback()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// draw the background
 
-	drawAxis();
-	drawPipe();
+	drawLightsOut();
 
 	glFlush(); // flush out the buffer contents
 }
@@ -131,8 +204,7 @@ void update() {
 	case 5: glRotatef(45.0, 0.0, 0.0, 1.0); break;
 	case 6: glRotatef(-45.0, 0.0, 0.0, 1.0); break;
 	}
-	drawPipe();
-	drawAxis();
+	drawLightsOut();
 	glFlush();
 }
 
@@ -180,14 +252,15 @@ void runZMenu(int x) {
 void mykeyboardFunc(int key, int x, int y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	switch (key) {
-	case GLUT_KEY_LEFT: cout << "LEFT\n";  xangle += 1; cout << xangle; glRotatef(xangle, 1.0, 0.0, 0.0); xangle = 0; break;
-	case GLUT_KEY_RIGHT: cout << "RIGHT\n"; xangle -= 1; cout << xangle; glRotatef(xangle, 1.0, 0.0, 0.0); xangle = 0; break;
-	case GLUT_KEY_UP: cout << "UP\n"; yangle += 1; cout << yangle; glRotatef(yangle, 0.0, 1.0, 0.0); yangle = 0; break;
-	case GLUT_KEY_DOWN: cout << "Down\n"; yangle -= 1; cout << yangle; glRotatef(yangle, 0.0, 1.0, 0.0); yangle = 0; break;
+	case GLUT_KEY_LEFT: glRotatef(5.0, 1.0, 0.0, 0.0); break;
+	case GLUT_KEY_RIGHT: glRotatef(-5.0, 1.0, 0.0, 0.0); break;
+	case GLUT_KEY_UP: glRotatef(5.0, 0.0, 1.0, 0.0); break;
+	case GLUT_KEY_DOWN: glRotatef(-5.0, 0.0, 1.0, 0.0); break;
+	case GLUT_KEY_PAGE_UP: glRotatef(5.0, 0.0, 0.0, 1.0); break;
+	case GLUT_KEY_PAGE_DOWN: glRotatef(-5.0, 0.0, 0.0, 1.0); break;
 	case GLUT_KEY_END: myInit(); myDisplayCallback(); break; 
 	}
-	drawPipe();
-	drawAxis();
+	drawLightsOut();
 	glFlush();
 }
 
