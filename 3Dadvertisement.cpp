@@ -8,11 +8,10 @@
 								- basic setup of windows
 								- render the background
 								- render the frame 
-								- add camera movement via LEFT-RIGHT-DOWN-UP keys
+								- object transformation via LEFT-RIGHT-DOWN-UP keys
 							Josiah McGurty -- 50%
 								- basic setup of windows
-								- render 3D objects
-								- cosmetic work on 3D objects
+								- render 3D text
  LAST MODIFIED DATE:		12.12.2018
  DESCRIPTION:				Lab Project 3, working with 3D objects in openGL to create an advertisement.
  NOTE:
@@ -54,7 +53,13 @@ GLfloat letterVertices[][3] = {
 
 GLfloat pipeColors[][3] = { {0.8, 0.2, 0.1}, {0.1, 0.8, 0.2}, {0.1, 0.2, 0.8} };
 
-//***********************************************************************************
+/*==============================================
+Function drawLetters()
+
+This function serves as the template for actually placing
+vertices into a 3D space.
+
+=================================================*/
 void drawLetters(int a, int b, int c, int d)
 {
 	glBegin(GL_POLYGON);
@@ -65,7 +70,13 @@ void drawLetters(int a, int b, int c, int d)
 	glEnd();
 }
 
-//***********************************************************************************
+/*==============================================
+Function drawLightsOut()
+
+This function uses drawLetters() to draw the vertices given
+to form 3D letters.
+
+=================================================*/
 void drawLightsOut()
 {
 	glPolygonMode(GL_BACK, GL_LINE);
@@ -128,7 +139,7 @@ void drawLightsOut()
 	//drawPolygon(5, 1, 0, 4);
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 void myInit()
 {
 	glClearColor(0.15, 0.15, 0.15, 0);			// specify a background color: white 
@@ -141,7 +152,7 @@ void myInit()
 	glOrtho(-200.0, 200.0, -200.0, 200.0, -200.0, 200.0);
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 void myDisplayCallback()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// draw the background
@@ -151,6 +162,11 @@ void myDisplayCallback()
 	glFlush(); // flush out the buffer contents
 }
 
+/*============================================
+Function update()
+This function is the end point for the right-click menu, 
+where the object rendered can be rotated a set amount.
+===================================================*/
 void update() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	switch (selection) {
@@ -165,7 +181,7 @@ void update() {
 	glFlush();
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 void FirstMenu(int x)
 {
 	if (x == 7) {
@@ -177,7 +193,7 @@ void FirstMenu(int x)
 	}
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 void runXMenu(int x) {
 	if (x == 1) {
 		selection = 1;
@@ -188,7 +204,7 @@ void runXMenu(int x) {
 	update();
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 void runYMenu(int x) {
 	if (x == 1) {
 		selection = 3;
@@ -199,7 +215,7 @@ void runYMenu(int x) {
 	update();
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 void runZMenu(int x) {
 	if (x == 1) {
 		selection = 5;
@@ -210,7 +226,11 @@ void runZMenu(int x) {
 	update();
 }
 
-//***********************************************************************************
+/*==========================================
+Function myKeyboardFunc()
+This function allows for the use of set keyboard buttons to transform the object
+rendered around certain axis, depending on which button was pressed. 
+=====================================================*/
 void mykeyboardFunc(int key, int x, int y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	switch (key) {
@@ -226,7 +246,7 @@ void mykeyboardFunc(int key, int x, int y) {
 	glFlush();
 }
 
-//***********************************************************************************
+/*===============================================================================================*/
 int main(int argc, char ** argv)
 {//glutInit(& argc, argv);                  // optional in our environment
 
